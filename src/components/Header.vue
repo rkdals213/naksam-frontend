@@ -1,6 +1,6 @@
 <template>
     <H1>HEADER</H1>
-    <div v-if="!this.$store.state.loginState">
+    <div v-if="!isLogin">
         <button v-on:click="toggleShowLoginModal">Login</button>
         <modal v-if="showLoginModal">
             <Login @showModal="showLoginModal"></Login>
@@ -14,7 +14,6 @@
 
 <script>
 import Login from "@/components/Login"
-import {useCookies} from 'vue3-cookies'
 import axios from "axios";
 
 export default {
@@ -23,22 +22,20 @@ export default {
         Login
     },
     setup() {
-        const cookie = useCookies()
-        return cookie
     },
     data() {
         return {
             showLoginModal: false
         }
     },
+    computed: {
+        isLogin() {
+           return this.$store.state.loginState
+        }
+    },
     mounted() {
-        this.showCookie()
     },
     methods: {
-        showCookie() {
-            const keys = this.cookie.keys()
-            console.log(keys)
-        },
         toggleShowLoginModal() {
             this.showLoginModal = !this.showLoginModal
             console.log(this.showLoginModal)
